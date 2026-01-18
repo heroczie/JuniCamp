@@ -16,12 +16,37 @@ public class SudokuSolver {
                 {0, 0, 0, 0, 0, 0, 0, 7, 0}
         };
 
-        if (solve(board)) {
+        int[][] board2 = {
+                {0, 2, 0, 0, 3, 0, 0, 4, 0},
+                {6, 0, 0, 0, 0, 0, 0, 0, 3},
+                {0, 0, 4, 0, 0, 0, 5, 0, 0},
+                {0, 0, 0, 8, 0, 6, 0, 0, 0},
+                {8, 0, 0, 0, 1, 0, 0, 0, 6},
+                {0, 0, 0, 7, 0, 5, 0, 0, 0},
+                {0, 0, 7, 0, 0, 0, 6, 0, 0},
+                {4, 0, 0, 0, 0, 0, 0, 0, 8},
+                {0, 3, 0, 0, 4, 0, 0, 2, 0}
+        };
+
+        int[][] unsolvableBoard = {
+                {7, 2, 0, 0, 3, 0, 0, 4, 0},
+                {6, 0, 0, 0, 0, 0, 0, 0, 3},
+                {0, 0, 4, 0, 0, 0, 5, 0, 0},
+                {0, 0, 0, 8, 0, 6, 0, 0, 0},
+                {8, 0, 0, 0, 1, 0, 0, 0, 6},
+                {0, 0, 0, 7, 0, 5, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 6, 0, 0},
+                {4, 0, 0, 0, 0, 0, 0, 0, 8},
+                {0, 5, 0, 0, 4, 0, 0, 2, 0}
+        };
+
+        if (solve(unsolvableBoard)) {
             System.out.println("Solved! :)");
-            printBoard(board);
+            printBoard(unsolvableBoard);
         }
         else {
-            System.out.print("Unsolvable :(");
+            System.out.println("Unsolvable :(");
+            printBoard(unsolvableBoard);
         }
 
     }
