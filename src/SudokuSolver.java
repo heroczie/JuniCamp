@@ -60,7 +60,7 @@ public class SudokuSolver {
 
     private static int[][] getBoardFromFile() {
         try {
-            Path p = Paths.get("C://Users/vicah/Projects/JuniCamp_SudokuSolver/files/sudoku.txt");
+            Path p = Paths.get("C://Users/vicah/Projects/JuniCamp_SudokuSolver/src/files/sudoku.txt");
 
             int[][] board = new int[GRID_SIZE][GRID_SIZE];
 
