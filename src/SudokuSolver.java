@@ -1,54 +1,98 @@
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
 public class SudokuSolver {
 
     private static final int GRID_SIZE = 9;
 
     public static void main(String[] args) {
 
-        int[][] board = {
-                {0, 3, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 1, 9, 5, 0, 0, 0},
-                {0, 0, 8, 0, 0, 0, 0, 6, 0},
-                {8, 0, 0, 0, 6, 0, 0, 0, 0},
-                {4, 0, 0, 8, 0, 0, 0, 0, 1},
-                {0, 0, 0, 0, 2, 0, 0, 0, 0},
-                {0, 6, 0, 0, 0, 0, 2, 8, 0},
-                {0, 0, 0, 4, 1, 9, 0, 0, 5},
-                {0, 0, 0, 0, 0, 0, 0, 7, 0}
-        };
+//        int[][] board = {
+//                {0, 3, 0, 0, 0, 0, 0, 0, 0},
+//                {0, 0, 0, 1, 9, 5, 0, 0, 0},
+//                {0, 0, 8, 0, 0, 0, 0, 6, 0},
+//                {8, 0, 0, 0, 6, 0, 0, 0, 0},
+//                {4, 0, 0, 8, 0, 0, 0, 0, 1},
+//                {0, 0, 0, 0, 2, 0, 0, 0, 0},
+//                {0, 6, 0, 0, 0, 0, 2, 8, 0},
+//                {0, 0, 0, 4, 1, 9, 0, 0, 5},
+//                {0, 0, 0, 0, 0, 0, 0, 7, 0}
+//        };
+//
+//        int[][] board2 = {
+//                {0, 2, 0, 0, 3, 0, 0, 4, 0},
+//                {6, 0, 0, 0, 0, 0, 0, 0, 3},
+//                {0, 0, 4, 0, 0, 0, 5, 0, 0},
+//                {0, 0, 0, 8, 0, 6, 0, 0, 0},
+//                {8, 0, 0, 0, 1, 0, 0, 0, 6},
+//                {0, 0, 0, 7, 0, 5, 0, 0, 0},
+//                {0, 0, 7, 0, 0, 0, 6, 0, 0},
+//                {4, 0, 0, 0, 0, 0, 0, 0, 8},
+//                {0, 3, 0, 0, 4, 0, 0, 2, 0}
+//        };
+//
+//        int[][] unsolvableBoard = {
+//                {7, 2, 0, 0, 3, 0, 0, 4, 0},
+//                {6, 0, 0, 0, 0, 0, 0, 0, 3},
+//                {0, 0, 4, 0, 0, 0, 5, 0, 0},
+//                {0, 0, 0, 8, 0, 6, 0, 0, 0},
+//                {8, 0, 0, 0, 1, 0, 0, 0, 6},
+//                {0, 0, 0, 7, 0, 5, 0, 0, 0},
+//                {0, 0, 0, 0, 0, 0, 6, 0, 0},
+//                {4, 0, 0, 0, 0, 0, 0, 0, 8},
+//                {0, 5, 0, 0, 4, 0, 0, 2, 0}
+//        };
 
-        int[][] board2 = {
-                {0, 2, 0, 0, 3, 0, 0, 4, 0},
-                {6, 0, 0, 0, 0, 0, 0, 0, 3},
-                {0, 0, 4, 0, 0, 0, 5, 0, 0},
-                {0, 0, 0, 8, 0, 6, 0, 0, 0},
-                {8, 0, 0, 0, 1, 0, 0, 0, 6},
-                {0, 0, 0, 7, 0, 5, 0, 0, 0},
-                {0, 0, 7, 0, 0, 0, 6, 0, 0},
-                {4, 0, 0, 0, 0, 0, 0, 0, 8},
-                {0, 3, 0, 0, 4, 0, 0, 2, 0}
-        };
 
-        int[][] unsolvableBoard = {
-                {7, 2, 0, 0, 3, 0, 0, 4, 0},
-                {6, 0, 0, 0, 0, 0, 0, 0, 3},
-                {0, 0, 4, 0, 0, 0, 5, 0, 0},
-                {0, 0, 0, 8, 0, 6, 0, 0, 0},
-                {8, 0, 0, 0, 1, 0, 0, 0, 6},
-                {0, 0, 0, 7, 0, 5, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 6, 0, 0},
-                {4, 0, 0, 0, 0, 0, 0, 0, 8},
-                {0, 5, 0, 0, 4, 0, 0, 2, 0}
-        };
+        int[][] board = getBoardFromFile();
 
-        if (solve(unsolvableBoard)) {
+        if (solve(board)) {
             System.out.println("Solved! :)");
-            printBoard(unsolvableBoard);
-        }
-        else {
+            printBoard(board);
+        } else {
             System.out.println("Unsolvable :(");
-            printBoard(unsolvableBoard);
+            printBoard(board);
         }
 
+    }
+
+    private static int[][] getBoardFromFile() {
+        try {
+            Path p = Paths.get("C://Users/vicah/Projects/JuniCamp_SudokuSolver/src/files/sudoku.txt");
+
+            int[][] board = new int[GRID_SIZE][GRID_SIZE];
+
+            if (Files.exists(p)) {
+
+                List<String> data = Files.readAllLines(p);
+                int r = 0;
+
+                while (r < GRID_SIZE) {
+                    for (String s : data) {
+                        //egy sor egy String
+                        for (int c = 0; c < GRID_SIZE; c++) {
+
+                            char character = s.charAt(c);
+
+                            int num = Character.getNumericValue(character);
+
+                            board[r][c] = num;
+                        }
+                        r++;
+                    }
+                }
+
+            } else {
+                System.out.println("The file doesn't exist!");
+            }
+
+            return board;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static boolean solve(int[][] board) {
@@ -56,13 +100,12 @@ public class SudokuSolver {
             for (int c = 0; c < GRID_SIZE; c++) {
                 if (board[r][c] == 0) {
                     for (int n = 1; n <= GRID_SIZE; n++) {
-                        if(isPlaceable(board, n, r, c)) {
+                        if (isPlaceable(board, n, r, c)) {
                             board[r][c] = n;
 
                             if (solve(board)) {
                                 return true;
-                            }
-                            else {
+                            } else {
                                 board[r][c] = 0;
                             }
                         }
